@@ -79,6 +79,17 @@ function getData (arrayOfTopics) {
 	return new Promise((masterResolve, reject) => {
 		let urls = arrayOfTopics.map((element) => {
 			return `https://hatchways.io/api/assessment/blog/posts?tag=${element}`;
+
+			
+		});
+
+		Promise.all(urls.map ((eachUrl) => {
+			axios.get(eachUrl).then((checkStatus) => {
+
+			});
+		})).then ((returnedData) => {
+			console.log(returnedData);
+			resolve(returnedData);
 		});
 	});
 }
