@@ -77,20 +77,8 @@ function makeFetchRequest(topic) {
 
 function getData (arrayOfTopics) {
 	return new Promise((masterResolve, reject) => {
-		let promiseArray = [];
-		
-		arrayOfTopics.forEach((topic) => {
-			promiseArray.push(new Promise ((resolve) => axios.get(`https://hatchways.io/api/assessment/blog/posts?tag=${topic}`)
-			.then((axiosResponse) => 
-
-				{ resolve(axiosResponse) ;})));
-		});
-
-		
-		Promise.all(promiseArray)
-		.then((data) => {
-			//console.log("Data results: ", data);
-			masterResolve(data);
+		let urls = arrayOfTopics.map((element) => {
+			return `https://hatchways.io/api/assessment/blog/posts?tag=${element}`;
 		});
 	});
 }
