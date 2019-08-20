@@ -53,9 +53,8 @@ app.get("/api/posts", (req, res) => {
 	}
 
 	getData(validationTagsResult.result).then((responseData) => {
-	//console.log("tags: ", tags);
-		//console.log("Response data before it is sent: ", responseData);
-		res.status(200).send({ success: 'got posts', response: responseData.data.posts });
+		//console.log(responseData);
+		res.status(200).send({ success: 'got posts', posts: responseData });
 	})
 	.catch((error) => {
 		res.status(400).send({error: error});
@@ -67,29 +66,31 @@ app.listen(PORT, () => {
 	console.log(`Server listening on port ${PORT}`);
 });
 
-function makeFetchRequest(topic) {
-	return new Promise((resolve, reject) => {
-		axios.get(`https://hatchways.io/api/assessment/blog/posts?tag=${topic}`).then ((response) => {
-			resolve(response);
-		});
-	});
-}
-
 function getData (arrayOfTopics) {
 	return new Promise((masterResolve, reject) => {
 		let urls = arrayOfTopics.map((element) => {
 			return `https://hatchways.io/api/assessment/blog/posts?tag=${element}`;
-
+		});
+		
+		let posts = [];
+		let promises = urls.map((eachURL) => {
+			return new Promise((resolve, reject) => {
+				axios.get(eachURL)
+				.then((result) => {
+					resolve(result.data.posts);
+					result.data.posts.forEach((p) => {
+						posts.push(p);
+					});
+					//console.log("POSTS", result.data.posts);
+				});
 			
+			});
 		});
 	
-		Promise.all(urls.map ((eachUrl) => {
-			axios.get(eachUrl).then((checkStatus) => {
-			//	console.log(checkStatus.data.posts);
-			});
-		})).then ((data) => {
-			console.log(data)
-			masterResolve(data);
+		Promise.all(promises)
+		.then((values) => {
+			console.log("POSTS", posts);
+			masterResolve(posts);
 		});
 	});
 }
