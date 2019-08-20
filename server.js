@@ -82,14 +82,14 @@ function getData (arrayOfTopics) {
 
 			
 		});
-
+	
 		Promise.all(urls.map ((eachUrl) => {
 			axios.get(eachUrl).then((checkStatus) => {
-
+			//	console.log(checkStatus.data.posts);
 			});
-		})).then ((returnedData) => {
-			console.log(returnedData);
-			resolve(returnedData);
+		})).then ((data) => {
+			console.log(data)
+			masterResolve(data);
 		});
 	});
 }
