@@ -27,9 +27,10 @@ module.exports = {
   validateSortBy: (sortByString) => {
     // The sortByString should be an existing key, otherwise it's invalid
     if (sortByString) {
-      sortByString = sortByString.toLowerCase();
-      if (sampleJSONObject.hasOwnProperty(sortByString.toLowerCase())) {
+      if (sampleJSONObject.hasOwnProperty(sortByString)) {
         return { valid: true, result: sortByString };
+      } else {
+        return { valid: false, reason: `property <<${sortByString}>> not found`};
       }
     } else {
       return { valid: false, reason: "sortBy parameter is invalid" };

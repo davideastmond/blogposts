@@ -55,7 +55,16 @@ app.get("/api/posts", (req, res) => {
 
 	dataHelpers.getData(validationTagsResult.result).then((responseData) => {
 		//console.log(responseData);
-		res.status(200).send({ success: 'got posts', posts: responseData });
+		// Sort the info
+		if (sortBy || direction) {
+			// If any of these query parameters are present, perform a sort
+			
+			const sortedValues = dataHelpers.sortResponseData(responseData, sortBy, direction);
+			res.status(200).send({ success: 'got posts', posts: sortedValues, sortInfo: {sorted: true, sortBy: sortBy, direction: direction } });
+		} else {
+			res.status(200).send({ success: 'got posts', posts: responseData });
+		}
+		
 	})
 	.catch((error) => {
 		res.status(400).send({error: error});

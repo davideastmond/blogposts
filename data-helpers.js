@@ -23,10 +23,33 @@ module.exports = {
 		});
 	},
 	
+	sortResponseData: (arrayData, sortByProperty = "id", dir = "asc") => {
+		// Function will return a sorted array
+		if (dir === "asc") {
+			return arrayData.sort((a, b) => {
+				if (a[sortByProperty] < b[sortByProperty]) {
+					return -1;
+				} else if (a[sortByProperty] > b[sortByProperty]) {
+					return 1;
+				}
+				return 0;
+			});
+		} else if (dir === "desc") {
+			return arrayData.sort((a, b) => {
+				if (a[sortByProperty] < b[sortByProperty]) {
+					return 1;
+				} else if (a[sortByProperty] > b[sortByProperty]) {
+					return -1;
+				} 
+				return 0;
+			});
+		}
+		
+	}
 	 
 };
 const getPromisesArray = (urls) =>{
-	// This is going to return an object - first element a promise arrray, second an array of posts
+	// This is going to return an object - first element a promise array, second an array of posts
 	let returnPosts = [];
 	let promises = urls.map((eachURL) => {
 		return new Promise((resolve) => {
