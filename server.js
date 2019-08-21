@@ -28,7 +28,6 @@ app.get("/api/posts", (req, res) => {
 	Tags need to be stored in an array. We'll use split() to split them with a comma delimiter
 	*/
 
-
 	const tags = req.query.tags;
 	const sortBy = req.query.sortBy;
 	const direction = req.query.direction;
@@ -104,6 +103,6 @@ function getPromisesArray(urls) {
 		});
 	});
 
-	
+	// Need to sort
 	return { promises: promises, posts: returnPosts };
 }
