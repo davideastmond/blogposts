@@ -28,8 +28,7 @@ app.get("/api/posts", (req, res) => {
 	/* Grab the info from the queryStrings and store them in variables. 
 	Tags need to be stored in an array. We'll use split() to split them with a comma delimiter
 	*/
-
-	const tags = req.query.tags;
+	
 	const sortBy = req.query.sortBy;
 	const direction = req.query.direction;
 
@@ -54,10 +53,9 @@ app.get("/api/posts", (req, res) => {
 	}
 
 	dataHelpers.getData(validationTagsResult.result).then((responseData) => {
-		//console.log(responseData);
-		// Sort the info
+		// Sort the response only if we have a sortBy or direction query parameter
 		if (sortBy || direction) {
-			// If any of these query parameters are present, perform a sort
+			// If any of these query parameters are present, perform a sort by calling a function from our dataHelpers
 			
 			const sortedValues = dataHelpers.sortResponseData(responseData, sortBy, direction);
 			res.status(200).send({ success: 'got posts', posts: sortedValues, sortInfo: {sorted: true, sortBy: sortBy, direction: direction } });

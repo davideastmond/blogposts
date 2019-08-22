@@ -17,7 +17,6 @@ const sampleJSONObject = {
 module.exports = {
   validateTags: (tagString) => {
     // Checks if a tag query is present
-    console.log(tagString);
     if (tagString) {
       return { valid: true, result: tagString.split(',') };
     }
@@ -38,6 +37,7 @@ module.exports = {
   },
 
   validateSortDirection: (sortDirectionString) => {
+		// Checks that the sort direction query param is valid.
     if (sortDirectionString) {
       sortDirectionString = sortDirectionString.toLowerCase();
       if (sortDirectionString !== "asc" && sortDirectionString !== "desc") {
