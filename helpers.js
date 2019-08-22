@@ -37,7 +37,7 @@ module.exports = {
   },
 
   validateSortDirection: (sortDirectionString) => {
-		// Checks that the sort direction query param is valid.
+    // Checks that the sort direction query param is valid.
     if (sortDirectionString) {
       sortDirectionString = sortDirectionString.toLowerCase();
       if (sortDirectionString !== "asc" && sortDirectionString !== "desc") {

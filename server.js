@@ -14,63 +14,63 @@ app.use(express.urlencoded());
 
 // Routes
 app.get("/api/ping", (req, res) => {
-	// As per requirements, api/ping route response
-	res.status(200).send({ success: true });
+  // As per requirements, api/ping route response
+  res.status(200).send({ success: true });
 });
 
 app.get("/api/posts", (req, res) => {
-	/* We have three query parameters needed to complete a successful API request 
-		tags: subjects to query
-		sortBy: field to sort
-		direction: ascending or descending
-	*/
+  /* We have three query parameters needed to complete a successful API request 
+    tags: subjects to query
+    sortBy: field to sort
+    direction: ascending or descending
+  */
 
-	/* Grab the info from the queryStrings and store them in variables. 
-	Tags need to be stored in an array. We'll use split() to split them with a comma delimiter
-	*/
-	
-	const sortBy = req.query.sortBy;
-	const direction = req.query.direction;
+  /* Grab the info from the queryStrings and store them in variables. 
+  Tags need to be stored in an array. We'll use split() to split them with a comma delimiter
+  */
+  
+  const sortBy = req.query.sortBy;
+  const direction = req.query.direction;
 
-	// Validate query input by calling the helper functions. They will return an appropriate HTTP response depending on the result
-	const validationTagsResult = helpers.validateTags(req.query.tags);
-	const validationSortByResult = helpers.validateSortBy(sortBy);
-	const validationSortDirection = helpers.validateSortDirection(direction);
+  // Validate query input by calling the helper functions. They will return an appropriate HTTP response depending on the result
+  const validationTagsResult = helpers.validateTags(req.query.tags);
+  const validationSortByResult = helpers.validateSortBy(sortBy);
+  const validationSortDirection = helpers.validateSortDirection(direction);
 
-	if (!validationTagsResult.valid) {
-		res.status(400).send({ error: validationTagsResult.reason });
-		return;
-	}
+  if (!validationTagsResult.valid) {
+    res.status(400).send({ error: validationTagsResult.reason });
+    return;
+  }
 
-	if (!validationSortByResult.valid) {
-		res.status(400).send({ error: validationSortByResult.reason });
-		return;
-	}
+  if (!validationSortByResult.valid) {
+    res.status(400).send({ error: validationSortByResult.reason });
+    return;
+  }
 
-	if (!validationSortDirection.valid) {
-		res.status(400).send( { error: validationSortDirection.reason });
-		return;
-	}
+  if (!validationSortDirection.valid) {
+    res.status(400).send( { error: validationSortDirection.reason });
+    return;
+  }
 
-	dataHelpers.getData(validationTagsResult.result).then((responseData) => {
-		// Sort the response only if we have a sortBy or direction query parameter
-		if (sortBy || direction) {
-			// If any of these query parameters are present, perform a sort by calling a function from our dataHelpers
-			
-			const sortedValues = dataHelpers.sortResponseData(responseData, sortBy, direction);
-			res.status(200).send({ success: 'got posts', posts: sortedValues, sortInfo: {sorted: true, sortBy: sortBy, direction: direction } });
-		} else {
-			res.status(200).send({ success: 'got posts', posts: responseData });
-		}
-		
-	})
-	.catch((error) => {
-		res.status(400).send({error: error});
-	});
+  dataHelpers.getData(validationTagsResult.result).then((responseData) => {
+    // Sort the response only if we have a sortBy or direction query parameter
+    if (sortBy || direction) {
+      // If any of these query parameters are present, perform a sort by calling a function from our dataHelpers
+      
+      const sortedValues = dataHelpers.sortResponseData(responseData, sortBy, direction);
+      res.status(200).send({ success: 'got posts', posts: sortedValues, sortInfo: {sorted: true, sortBy: sortBy, direction: direction } });
+    } else {
+      res.status(200).send({ success: 'got posts', posts: responseData });
+    }
+    
+  })
+  .catch((error) => {
+    res.status(400).send({error: error});
+  });
 });
 
 // Server listening
 app.listen(PORT, () => {
-	console.log(`Server listening on port ${PORT}`);
+  console.log(`Server listening on port ${PORT}`);
 });
 
