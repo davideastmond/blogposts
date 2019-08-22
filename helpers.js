@@ -33,7 +33,7 @@ module.exports = {
         return { valid: false, reason: `property <<${sortByString}>> not found`};
       }
     } else {
-      return { valid: false, reason: "sortBy parameter is invalid" };
+      return { valid: true, result: "id" };
     }
   },
 
