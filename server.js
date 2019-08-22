@@ -5,6 +5,7 @@ const PORT = 7575;
 const axios = require('axios');
 const dataHelpers = require('./data-helpers');
 const path = require('path');
+const cache = require('memory-cache');
 
 // Modules
 const helpers = require('./helpers.js');
@@ -53,21 +54,38 @@ app.get("/api/posts", (req, res) => {
     return;
   }
 
-  dataHelpers.getData(validationTagsResult.result).then((responseData) => {
-    // Sort the response only if we have a sortBy or direction query parameter
-    if (sortBy || direction) {
-      // If any of these query parameters are present, perform a sort by calling a function from our dataHelpers
-      
-      const sortedValues = dataHelpers.sortResponseData(responseData, sortBy, direction);
-      res.status(200).send({ success: 'got posts', posts: sortedValues, sortInfo: {sorted: true, sortBy: sortBy, direction: direction } });
-    } else {
-      res.status(200).send({ success: 'got posts', posts: responseData });
-    }
+  // Check if the query is cached, if not, hit the API. If so, return the cached data (sorted if necessary)
+  let cachedData = cache.get(req.originalUrl);
+
+  if (cachedData) {
     
-  })
-  .catch((error) => {
-    res.status(400).send({error: error});
-  });
+    if (sortBy || direction) {
+      const sortedValues = dataHelpers.sortResponseData(cachedData, sortBy, direction);
+      res.status(200).send({ success: 'ok', posts: sortedValues, cachedResponse: 'true', sortInfo: {sorted: true, sortBy: sortBy, direction: direction }});
+    } else {
+      res.status(200).send({ success: 'ok', posts: cachedData, cachedResponse: 'true' });
+    }
+
+  } else {
+    dataHelpers.getData(validationTagsResult.result).then((responseData) => {
+      // Sort the response only if we have a sortBy or direction query parameter
+      if (sortBy || direction) {
+        // If any of these query parameters are present, perform a sort by calling a function from our dataHelpers
+        
+        const sortedValues = dataHelpers.sortResponseData(responseData, sortBy, direction);
+        res.status(200).send({ success: 'ok', posts: sortedValues, sortInfo: {sorted: true, sortBy: sortBy, direction: direction } });
+      } else {
+        res.status(200).send({ success: 'ok', posts: responseData });
+      }
+      
+      // Store the response in the cache
+      cache.put(req.originalUrl, responseData);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(400).send({error: error});
+    });
+  }
 });
 
 // Server listening

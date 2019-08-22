@@ -21,6 +21,8 @@ Returns blog posts tagged with _health_ sorted by the like count in ascending or
 - body-parser
 - axios
 - memory cache
+- postman (for testing)
+
 ### Installation
 1. Unzip code into folder.
 2. Install packages by running `npi i`
