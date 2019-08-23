@@ -2,9 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const PORT = 7575;
-const axios = require('axios');
 const dataHelpers = require('./data-helpers');
-const path = require('path');
 const cache = require('memory-cache');
 
 // Modules
