@@ -54,7 +54,7 @@ app.get("/api/posts", (req, res) => {
     return;
   }
 
-  // Check if the query is cached, if not, hit the API. If so, return the cached data (sorted if necessary)
+  // Check if the query is cached -- if not, hit the API. If so, return the cached data (sorted if necessary)
   let cachedData = cache.get(req.originalUrl);
 
   if (cachedData) {

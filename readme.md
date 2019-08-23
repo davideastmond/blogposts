@@ -2,7 +2,7 @@
 
 ## About
 
-This project is a RESTful API, which will fetch blog posts (from an underlying API) based on the queries it receieves. The blog posts will be returned in JSON format
+This project is a RESTful API, which will fetch blog posts (from an underlying API) based on the queries it receieves. The blog posts will be returned in JSON format.
 
 - *Example:*
 `http://localhost:7575/api/posts?tags=tech&direction=desc`
@@ -14,7 +14,7 @@ Returns blog posts tagged with _health_ sorted by the like count in ascending or
 
 
 - Multiple tags are supported. Separate each tag with a comma.
-- Caching has also been implemented. If an identical URI is provided, it will check cache first and send a cached response if necessary, otherwise it will hit the source API
+- Caching has also been implemented. Requests will be queried against the cache (based on URI), and will send a cached response if necessary, otherwise it will hit the source API.
 
 ## Requirements / Dependencies
 
@@ -26,6 +26,7 @@ Returns blog posts tagged with _health_ sorted by the like count in ascending or
 - Postman native app (for testing) [Download here](https://www.getpostman.com)
 
 ## Installation
+
 1. Unzip code into folder.
 2. Install packages by running `npi i`
 3. Install Postman native app (for testing) [Download here](https://www.getpostman.com)
@@ -41,6 +42,6 @@ Install the Postman native application for your OS, and click the link below to 
 
 #### Testing includes:
 
-- ensuring a valid response is received
-- ensuring sorting is correct
-- ensuring there are no duplicate posts in a response
+- ensuring the routes return valid responses and error messages as necessary.
+- ensuring sorting is correct.
+- ensuring there are no duplicate posts in a response.
