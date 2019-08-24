@@ -52,5 +52,5 @@ module.exports = {
 };
 
 function validSortByParameter (inputParameter) {
-	return (inputParameter === "id" || inputParameter === "reads" || inputParameter === "likes" || inputParameter === "popularity");
+  return (inputParameter === "id" || inputParameter === "reads" || inputParameter === "likes" || inputParameter === "popularity");
 }
