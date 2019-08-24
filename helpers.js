@@ -26,10 +26,10 @@ module.exports = {
   validateSortBy: (sortByString) => {
     // The sortByString should be an existing key, otherwise it's invalid
     if (sortByString) {
-      if (sampleJSONObject.hasOwnProperty(sortByString)) {
+      if (validSortByParameter(sortByString)) {
         return { valid: true, result: sortByString };
       } else {
-        return { valid: false, reason: `property <<${sortByString}>> not found`};
+        return { valid: false, reason: `property <<${sortByString}>> not found or invalid`};
       }
     } else {
       return { valid: true, result: "id" };
@@ -50,3 +50,7 @@ module.exports = {
     }
   }
 };
+
+function validSortByParameter (inputParameter) {
+	return (inputParameter === "id" || inputParameter === "reads" || inputParameter === "likes" || inputParameter === "popularity");
+}

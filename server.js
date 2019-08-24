@@ -48,7 +48,7 @@ app.get("/api/posts", (req, res) => {
   }
 
   if (!validationSortDirection.valid) {
-    res.status(400).send( { error: validationSortDirection.reason });
+    res.status(400).send({ error: validationSortDirection.reason });
     return;
   }
 
@@ -71,7 +71,7 @@ app.get("/api/posts", (req, res) => {
         // If any of these query parameters are present, perform a sort by calling a function from our dataHelpers
         
         const sortedValues = dataHelpers.sortResponseData(responseData, sortBy, direction);
-        res.status(200).send({ success: 'ok', posts: sortedValues, sortInfo: {sorted: true, sortBy: sortBy, direction: direction } });
+        res.status(200).send({ success: 'ok', posts: sortedValues, sortInfo: { sorted: true, sortBy: sortBy, direction: direction } });
       } else {
         res.status(200).send({ success: 'ok', posts: responseData });
       }
@@ -81,7 +81,7 @@ app.get("/api/posts", (req, res) => {
     })
     .catch((error) => {
       console.log(error);
-      res.status(400).send({error: error});
+      res.status(400).send({ error: error });
     });
   }
 });
