@@ -56,20 +56,17 @@ app.get("/api/posts", (req, res) => {
   let cachedData = cache.get(req.originalUrl);
 
   if (cachedData) {
-    
     if (sortBy || direction) {
       const sortedValues = dataHelpers.sortResponseData(cachedData, sortBy, direction);
-      res.status(200).send({ success: 'ok', posts: sortedValues, cachedResponse: 'true', sortInfo: {sorted: true, sortBy: sortBy, direction: direction }});
+      res.status(200).send({ success: 'ok', posts: sortedValues, cachedResponse: 'true', sortInfo: { sorted: true, sortBy: sortBy, direction: direction }});
     } else {
       res.status(200).send({ success: 'ok', posts: cachedData, cachedResponse: 'true' });
     }
-
   } else {
     dataHelpers.getData(validationTagsResult.result).then((responseData) => {
       // Sort the response only if we have a sortBy or direction query parameter
       if (sortBy || direction) {
         // If any of these query parameters are present, perform a sort by calling a function from our dataHelpers
-        
         const sortedValues = dataHelpers.sortResponseData(responseData, sortBy, direction);
         res.status(200).send({ success: 'ok', posts: sortedValues, sortInfo: { sorted: true, sortBy: sortBy, direction: direction } });
       } else {

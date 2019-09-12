@@ -1,4 +1,5 @@
 const axios = require('axios');
+require('dotenv').config();
 
 module.exports = {
   // This module hits the hatchways api and gets the data concurrently. It also removes duplicates
@@ -6,7 +7,7 @@ module.exports = {
     return new Promise((masterResolve) => {
       // Convert each query into a correctly composed API end point and put each URI into an array
       let urls = arrayOfTags.map((element) => {
-        return `https://hatchways.io/api/assessment/blog/posts?tag=${element}`;
+				return process.env.HATCHWAYS_URI.concat(element);
       });
       
       // Make the urls into an array of promises
