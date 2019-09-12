@@ -7,7 +7,7 @@ module.exports = {
     return new Promise((masterResolve) => {
       // Convert each query into a correctly composed API end point and put each URI into an array
       let urls = arrayOfTags.map((element) => {
-				return process.env.H_URI.concat(element);
+        return process.env.H_URI.concat(element);
       });
       
       // Make the urls into an array of promises
