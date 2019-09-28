@@ -16,12 +16,14 @@ module.exports = {
       // Complete all the axios get requests concurrently, and when complete, resolve everything, returning an array of posts
       Promise.all(postPromiseData.promises)
       .then(() => {
-  
-        // This should filter out duplicate posts by post id (from: https://dev.to/vuevixens/removing-duplicates-in-an-array-of-objects-in-js-with-sets-3fep )
-        let uniquePosts = Array.from(new Set(postPromiseData.posts.map(a => a.id )))
-        .map(id => {
-          return postPromiseData.posts.find(a => a.id === id);
-        });
+        const uIDs = {};
+        let uniquePosts = [];
+        postPromiseData.posts.forEach((post) => {
+          if (!uIDs.hasOwnProperty(post.id)) {
+            uIDs[post.id] = 0;
+            uniquePosts.push(post);
+          }
+        });	
         masterResolve(uniquePosts);
       });
     });
